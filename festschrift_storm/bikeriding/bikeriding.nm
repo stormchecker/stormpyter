@@ -1,0 +1,133 @@
+mdp
+
+const int MAASTRICHT = 0;
+const int MARGRATEN = 1;
+const int VALKENBURG = 2;
+const int SCHIN_OP_GEUL = 3;
+const int GULPEN = 4;
+const int SLENAKEN = 5;
+const int VAALS = 6;
+const int AACHEN = 7;
+const int EPEN = 8;
+
+const bool ROPTSCHED;
+
+global town : [0..8] init MAASTRICHT;
+global towards : [-1..8] init -1;
+global use_train : bool init false;
+
+module jpk
+[select_valkenburg] town = MAASTRICHT & ROPTSCHED -> 0.8: (towards'=VALKENBURG) + 0.2: (towards'=MARGRATEN);
+[select_margraten] town = MAASTRICHT -> 0.9: (towards'=MARGRATEN) + 0.1: (towards'=VALKENBURG);
+[select_slenaken] town = MAASTRICHT & ROPTSCHED -> 1: (towards'=SLENAKEN);
+[select_train] town = MAASTRICHT & ROPTSCHED -> 0.5: (towards'=AACHEN) & (use_train'=true) + 0.5: (towards'=MAASTRICHT);
+[select_gulpen] town = MARGRATEN -> 0.6: (towards'=GULPEN) + 0.4: (towards'=SCHIN_OP_GEUL);
+[select_slenaken] town = MARGRATEN & ROPTSCHED -> 0.95: (towards'=SLENAKEN) + 0.05: (towards'=GULPEN);
+[select_schin_op_geul] town=VALKENBURG -> 1: (towards'=SCHIN_OP_GEUL);
+[select_gulpen] town=SCHIN_OP_GEUL    -> 0.95: (towards'=GULPEN) + 0.05:(towards'=MARGRATEN);
+[select_vaals] town=SCHIN_OP_GEUL & ROPTSCHED -> 0.8: (towards'=VAALS) + 0.2: (towards'=GULPEN);
+[select_vaals] town=GULPEN -> 0.4: (towards'=VAALS) + 0.4: (towards'=AACHEN) + 0.2: (towards'=SCHIN_OP_GEUL);
+[select_epen] town=GULPEN & ROPTSCHED -> 0.9: (towards'=EPEN) + 0.1: (towards'=SLENAKEN);
+[select_epen] town=SLENAKEN -> 0.9:(towards'=EPEN) + 0.1:(towards'=GULPEN);
+[select_vaals] town=EPEN -> 0.8: (towards'=VAALS) + 0.2: (towards'=AACHEN);
+[select_aachen] town=EPEN & ROPTSCHED     -> 0.9: (towards'=AACHEN) + 0.1: (towards'=VAALS);
+[select_aachen] town=VAALS -> 0.995: (towards'=AACHEN) + 0.005: (towards'=EPEN);
+[arrived] town=AACHEN -> true;
+endmodule
+
+module aux
+[select_valkenburg] towards = -1 -> true;
+[select_margraten] towards = -1 -> true;
+[select_schin_op_geul] towards = -1 -> true;
+[select_gulpen] towards = -1 -> true;
+[select_epen] towards = -1 -> true;
+[select_slenaken] towards = -1 -> true;
+[select_vaals] towards = -1 -> true;
+[select_aachen] towards = -1 -> true;
+[ride] !use_train & towards >= 0 -> 1:(town'=towards) & (towards'=-1);
+[select_train] towards = -1 -> true;
+[ride_train] use_train & towards=AACHEN -> 1:(towards'=-1) & (town'=towards) & (use_train'=false);
+
+endmodule
+
+rewards "boredom"
+  [ride] town = MAASTRICHT & towards = VALKENBURG: 2;
+  [ride] town = MAASTRICHT & towards = MARGRATEN: 10;
+  [ride] town = MAASTRICHT & towards = SLENAKEN: 2;
+  [ride] town = MARGRATEN & towards = GULPEN: 10;
+  [ride] town = MARGRATEN & towards = SLENAKEN: 0;
+  [ride] town = MARGRATEN & towards = SCHIN_OP_GEUL: 0;
+  [ride] town = VALKENBURG & towards = SCHIN_OP_GEUL: 1;
+  [ride] town = SCHIN_OP_GEUL & towards = GULPEN: 0;
+  [ride] town = SCHIN_OP_GEUL & towards = MARGRATEN: 0;
+  [ride] town = SCHIN_OP_GEUL & towards = VAALS: 0;
+  [ride] town = EPEN & towards = AACHEN: 0;
+  [ride] town = EPEN & towards = VAALS: 0;
+  [ride] town = GULPEN & towards = VAALS: 50;
+  [ride] town = GULPEN & towards = AACHEN: 0;
+  [ride] town = GULPEN & towards = EPEN: 0;
+  [ride] town = GULPEN & towards = SLENAKEN: 0;
+  [ride] town = GULPEN & towards = SCHIN_OP_GEUL: 5;
+  [ride] town = SLENAKEN & towards = GULPEN: 0;
+  [ride] town = SLENAKEN & towards = EPEN: 0;
+  [ride] town = VAALS & towards = AACHEN: 0;
+  [ride] town = VAALS & towards = EPEN: 0;
+  [ride_train] towards=AACHEN : 200;
+endrewards
+
+rewards "elevgain"
+  [select_train] true : 45;
+  [ride] town = MAASTRICHT & towards = VALKENBURG: 99;
+  [ride] town = MAASTRICHT & towards = MARGRATEN: 130;
+  [ride] town = MAASTRICHT & towards = SLENAKEN: 160;
+  [ride] town = MARGRATEN & towards = GULPEN: 0;
+  [ride] town = MARGRATEN & towards = SLENAKEN: 25;
+  [ride] town = MARGRATEN & towards = SCHIN_OP_GEUL: 14;
+  [ride] town = VALKENBURG & towards = SCHIN_OP_GEUL: 6;
+  [ride] town = SCHIN_OP_GEUL & towards = GULPEN: 123;
+  [ride] town = SCHIN_OP_GEUL & towards = MARGRATEN: 123;
+  [ride] town = SCHIN_OP_GEUL & towards = VAALS: 250;
+  [ride] town = EPEN & towards = AACHEN: 266;
+  [ride] town = EPEN & towards = VAALS: 149;
+  [ride] town = GULPEN & towards = VAALS: 109;
+  [ride] town = GULPEN & towards = AACHEN: 208;
+  [ride] town = GULPEN & towards = EPEN: 60;
+  [ride] town = GULPEN & towards = SLENAKEN: 50;
+  [ride] town = GULPEN & towards = SCHIN_OP_GEUL: 5;
+  [ride] town = SLENAKEN & towards = GULPEN: 0;
+  [ride] town = SLENAKEN & towards = EPEN: 80;
+  [ride] town = VAALS & towards = AACHEN: 45;
+  [ride] town = VAALS & towards = EPEN: 28;
+  [ride_train] towards=AACHEN : 45;
+endrewards
+
+rewards "time"
+  [select_train] true : 45;
+  [ride] town = MAASTRICHT & towards = VALKENBURG: 30;
+  [ride] town = MAASTRICHT & towards = MARGRATEN: 24;
+  [ride] town = MAASTRICHT & towards = SLENAKEN: 44;
+  [ride] town = MARGRATEN & towards = GULPEN: 10;
+  [ride] town = MARGRATEN & towards = SLENAKEN: 16;
+  [ride] town = MARGRATEN & towards = SCHIN_OP_GEUL: 10;
+  [ride] town = VALKENBURG & towards = SCHIN_OP_GEUL: 6;
+  [ride] town = SCHIN_OP_GEUL & towards = GULPEN: 23;
+  [ride] town = SCHIN_OP_GEUL & towards = MARGRATEN: 15;
+  [ride] town = SCHIN_OP_GEUL & towards = VAALS: 48;
+  [ride] town = EPEN & towards = AACHEN: 52;
+  [ride] town = EPEN & towards = VAALS: 19;
+  [ride] town = GULPEN & towards = VAALS: 16;
+  [ride] town = GULPEN & towards = AACHEN: 23;
+  [ride] town = GULPEN & towards = EPEN: 12;
+  [ride] town = GULPEN & towards = SLENAKEN: 13;
+  [ride] town = GULPEN & towards = SCHIN_OP_GEUL: 5;
+  [ride] town = SLENAKEN & towards = EPEN: 8;
+  [ride] town = SLENAKEN & towards = GULPEN: 12;
+  [ride] town = VAALS & towards = AACHEN: 7;
+  [ride] town = VAALS & towards = EPEN: 28;
+  [ride_train] towards=AACHEN : 45;
+endrewards
+
+label "Aachen" = town=AACHEN & towards = -1;
+
+// ./storm/build/bin/storm --prism ~/Downloads/bikeriding.nm --buildfull --exportbuild "bikeriding.dot" --buildchoicelab --buildstateval --prop "Pmax=? [F{\"time\"}<=90 \"Aachen\"]" --exportscheduler scheduler.txt -ec --exact -const "ROPTSCHED=true"
+// ./storm/build/bin/storm --prism ~/Downloads/bikeriding.nm --buildfull --exportbuild "bikeriding.dot" --buildchoicelab --buildstateval --prop "R{\"time\"}min=? [F \"Aachen\"]" --exportscheduler scheduler.txt -ec --exact -const "ROPTSCHED=true"

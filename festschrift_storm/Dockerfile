@@ -1,0 +1,58 @@
+# Run Docker container for Jupyter notebook
+ARG STORMPY_BASE=movesrwth/stormpy:stable
+FROM $STORMPY_BASE
+MAINTAINER Matthias Volk <m.volk@tue.nl>
+
+
+##########
+# Create user
+##########
+
+# Ubuntu 24.04 comes with 'ubuntu' user at id 1000
+# Change it to 1001 to free up 1000 for the binder user
+RUN usermod -u 1001 ubuntu
+RUN groupmod -g 1001 ubuntu
+ARG NB_USER=jovyan
+ARG NB_UID=1000
+ENV USER ${NB_USER}
+ENV NB_UID ${NB_UID}
+ENV HOME /home/${NB_USER}
+
+RUN adduser --disabled-password \
+    --gecos "Default user" \
+    --uid ${NB_UID} \
+    ${NB_USER}
+
+# Change the owner of the virtual environment
+WORKDIR /opt
+USER root
+RUN chown -R ${NB_UID} venv
+USER ${NB_USER}
+
+WORKDIR ${HOME}
+# Add missing path
+ENV PATH="$HOME/.local/bin:$PATH"
+
+
+##########
+# Install Jupyterlab
+##########
+
+RUN python3 -m pip install --no-cache-dir notebook jupyterlab
+
+
+##########
+# Install Python libraries
+##########
+
+RUN python3 -m pip install --no-cache-dir matplotlib
+
+##########
+# Copy files for notebooks
+##########
+
+COPY . ${HOME}
+# Change owner of files
+USER root
+RUN chown -R ${NB_UID} ${HOME}
+USER ${NB_USER}
