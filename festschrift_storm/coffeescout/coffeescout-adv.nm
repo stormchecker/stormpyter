@@ -20,14 +20,18 @@ module cc
   ccx : [0..N] init 0; // initial values not relevant
   ccy : [0..N] init 0; // initial values not relevant.
   [setprior] true -> 0.8: (ccx'=3) & (ccy'=5) +
-                0.2: (ccx'=1) & (ccy'=3);
+                0.2: (ccx'=1) & (ccy'=3); //+
+                //0.3: (ccx'=3) & (ccy'=1) +
+                //0.2: (ccx'=4) & (ccy'=6);
 endmodule
 
 module kk
   kkx : [0..N] init 0; // initial values not relevant.
   kky : [0..N] init 0; // initial values not relevant.
   [setprior] true ->0.3: (kkx'=6) & (kky'=5) +
-                0.7: (kkx'=4) & (kky'=5);
+                0.7: (kkx'=4) & (kky'=5);// +
+                //0.3: (kkx'=5) & (kky'=3) +
+                //0.2: (kkx'=4) & (kky'=1);
 endmodule
 
 module jpk
@@ -45,6 +49,12 @@ module jpk
 
 endmodule
 
+module adv
+  advx : [1..N] init hotelX+2;
+  advy : [1..N] init hotelX+2;
+  [jpkmove] true -> 1/4: (advx'=min(N,advx+1)) + 1/4: (advx'=max(1,advx-1)) +
+                     1/4: (advy'=min(N,advy+1)) + 1/4: (advy'=max(1,advy-1));
+endmodule
 
 rewards
   [jpkmove] true : 1;
@@ -52,4 +62,6 @@ endrewards
 
 formula atkk = kkx = jpkx & kky = jpky;
 formula atcc = ccx = jpkx & ccy = jpky;
+formula atadv = advx = jpkx & advy = jpky;
+label "notbad" = !atadv;
 label "foundcoffee" = atcc | atkk;

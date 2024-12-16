@@ -1,7 +1,14 @@
 # Jupyter notebooks for "Riding the Storm in a Probabilistic Model Checking Landscape"
+This set of notebooks is based on the paper with the same name,
+which appeared in a Festschrift dedicated to Joost-Pieter Katoen's 60th birthday. 
+The notebook is meant as a living document,
+that helps to run some of the advanced features of Storm. 
+The current version of the notebook is, however, rather basic. 
+Feel free to submit PRs!
+
 
 ## Getting started
-You can also start the Jupyterlab locally using [Docker](https://www.docker.com/).
+You can start the Jupyterlab locally using [Docker](https://www.docker.com/).
 First, build the Docker container with
 ```
 docker build -t movesrwth/stormpyter-festschrift .

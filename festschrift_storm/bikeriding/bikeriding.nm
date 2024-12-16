@@ -128,6 +128,14 @@ rewards "time"
 endrewards
 
 label "Aachen" = town=AACHEN & towards = -1;
+label "Maastricht" = town=MAASTRICHT & towards = -1;
+label "Margraten" = town=MARGRATEN & towards = -1;
+label "Valkenburg" = town=VALKENBURG & towards = -1;
+label "Epen" = town=EPEN & towards = -1;
+label "Gulpen" = town=GULPEN & towards = -1;
+label "Slenaken" = town=SLENAKEN & towards = -1;
+label "SchinOpGeul" = town=SCHIN_OP_GEUL & towards = -1;
+label "Vaals" = town=VAALS & towards = -1;
 
 // ./storm/build/bin/storm --prism ~/Downloads/bikeriding.nm --buildfull --exportbuild "bikeriding.dot" --buildchoicelab --buildstateval --prop "Pmax=? [F{\"time\"}<=90 \"Aachen\"]" --exportscheduler scheduler.txt -ec --exact -const "ROPTSCHED=true"
 // ./storm/build/bin/storm --prism ~/Downloads/bikeriding.nm --buildfull --exportbuild "bikeriding.dot" --buildchoicelab --buildstateval --prop "R{\"time\"}min=? [F \"Aachen\"]" --exportscheduler scheduler.txt -ec --exact -const "ROPTSCHED=true"

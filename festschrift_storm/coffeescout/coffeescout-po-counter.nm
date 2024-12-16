@@ -1,0 +1,79 @@
+pomdp
+
+observables
+jpkx, jpky, ccx, ccy, kkx, kky, initialize, counter
+endobservables
+
+const int N=6;
+const int MAXSTEPS;
+
+const int hotelX=2;
+const int hotelY=2;
+
+module prior
+initialize : bool init true;
+counter : [0..MAXSTEPS+2] init 0;
+[setprior] initialize -> (initialize'=false);
+[north] !initialize -> (counter'=min(counter+1,MAXSTEPS+2));
+[south] !initialize -> (counter'=min(counter+1,MAXSTEPS+2));
+[west] !initialize -> (counter'=min(counter+1,MAXSTEPS+2));
+[east] !initialize -> (counter'=min(counter+1,MAXSTEPS+2));
+endmodule
+
+module cc
+  ccx : [0..N] init 0; // initial values not relevant
+  ccy : [0..N] init 0; // initial values not relevant.
+  [setprior] true -> 1: (ccx'=3) & (ccy'=5);
+endmodule
+
+module kk
+  kkx : [0..N] init 0; // initial values not relevant.
+  kky : [0..N] init 0; // initial values not relevant.
+  [setprior] true -> 1: (kkx'=6) & (kky'=5);
+endmodule
+
+
+module jpk
+  jpkx : [1..N] init hotelX;
+  jpky : [1..N] init hotelY;
+  [east] true -> 1: (jpkx'=min(N,jpkx+1));
+  [west] true -> 1: (jpkx'=max(1,jpkx-1));
+  [south] true -> 1: (jpky'=min(N,jpky+1));
+  [north] true -> 1: (jpky'=max(1,jpky-1));
+endmodule
+
+module adv
+  advx : [1..N] init hotelX+2;
+  advy : [1..N] init hotelY+2;
+  [east] true -> 1/8: (advx'=min(N,advx+2)) + 1/8: (advx'=max(1,advx-2)) +
+                     1/8: (advy'=min(N,advy+2)) + 1/8: (advy'=max(1,advy-2)) +
+                     1/8: (advx'=min(N,advx+1)) + 1/8: (advx'=max(1,advx-1)) +
+                     1/8: (advy'=min(N,advy+1)) + 1/8: (advy'=max(1,advy-1));
+ [west] true -> 1/8: (advx'=min(N,advx+2)) + 1/8: (advx'=max(1,advx-2)) +
+                     1/8: (advy'=min(N,advy+2)) + 1/8: (advy'=max(1,advy-2)) +
+                     1/8: (advx'=min(N,advx+1)) + 1/8: (advx'=max(1,advx-1)) +
+                     1/8: (advy'=min(N,advy+1)) + 1/8: (advy'=max(1,advy-1));
+ [south] true -> 1/8: (advx'=min(N,advx+2)) + 1/8: (advx'=max(1,advx-2)) +
+                     1/8: (advy'=min(N,advy+2)) + 1/8: (advy'=max(1,advy-2)) +
+                     1/8: (advx'=min(N,advx+1)) + 1/8: (advx'=max(1,advx-1)) +
+                     1/8: (advy'=min(N,advy+1)) + 1/8: (advy'=max(1,advy-1));
+ [north] true -> 1/8: (advx'=min(N,advx+2)) + 1/8: (advx'=max(1,advx-2)) +
+                     1/8: (advy'=min(N,advy+2)) + 1/8: (advy'=max(1,advy-2)) +
+                     1/8: (advx'=min(N,advx+1)) + 1/8: (advx'=max(1,advx-1)) +
+                     1/8: (advy'=min(N,advy+1)) + 1/8: (advy'=max(1,advy-1));
+
+endmodule
+
+rewards
+  [north] true : 1;
+  [south] true : 1;
+  [west] true : 1;
+  [east] true : 1;
+endrewards
+
+formula atkk = kkx = jpkx & kky = jpky;
+formula atcc = ccx = jpkx & ccy = jpky;
+formula closetoadv = (advx = jpkx & advy - jpky <= 1 & jpky - advy <= 1) | (advy = jpky & advx - jpkx <=  1 & jpkx - advx <= 1 ) ;
+observable "seeadv" = closetoadv;
+label "notbad" = !closetoadv;
+label "foundcoffee" = (atcc | atkk) & counter <= MAXSTEPS;
