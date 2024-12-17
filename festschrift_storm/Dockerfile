@@ -45,7 +45,7 @@ RUN python3 -m pip install --no-cache-dir notebook jupyterlab
 # Install Python libraries
 ##########
 
-RUN python3 -m pip install --no-cache-dir matplotlib
+RUN python3 -m pip install --no-cache-dir matplotlib scipy
 
 ##########
 # Copy files for notebooks
