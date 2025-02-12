@@ -1,0 +1,55 @@
+dtmc
+
+const int N=6;
+
+const int hotelX=2;
+const int hotelY=2;
+
+const double pS;
+const double pW;
+const double pE;
+const double pN;
+
+module prior
+initialize : bool init true;
+[setprior] initialize -> (initialize'=false);
+[jpkmove] !initialize -> true;
+endmodule
+
+module cc
+  ccx : [0..N] init 0; // initial values not relevant
+  ccy : [0..N] init 0; // initial values not relevant.
+  [setprior] true -> 0.8: (ccx'=3) & (ccy'=5) +
+                0.2: (ccx'=1) & (ccy'=3);
+endmodule
+
+module kk
+  kkx : [0..N] init 0; // initial values not relevant.
+  kky : [0..N] init 0; // initial values not relevant.
+  [setprior] true ->0.3: (kkx'=6) & (kky'=5) +
+                0.7: (kkx'=4) & (kky'=5);
+endmodule
+
+module jpk
+  jpkx : [1..N] init hotelX;
+  jpky : [1..N] init hotelY;
+  [jpkmove] jpkx = 1            & jpky = 1            ->                                    pE/(pE+pS): (jpkx'=jpkx+1)                                          + pS/(pE+pS): (jpky'=jpky+1);
+  [jpkmove] jpkx > 1 & jpkx < N & jpky = 1            -> pW/(pE+pS+pW): (jpkx'=jpkx-1) +    pE/(pE+pS+pW): (jpkx'=jpkx+1)                                       +  pS/(pE+pS+pW): (jpky'=jpky+1);
+  [jpkmove] jpkx = N            & jpky = 1            -> pW/(pS+pW): (jpkx'=jpkx-1)                                                                             + pS/(pS+pW): (jpky'=jpky+1);
+  [jpkmove] jpkx = 1            & jpky > 1 & jpky < N ->                                    pE/(pE+pN+pS): (jpkx'=jpkx+1)     + pN/(pE+pN+pS): (jpky'=jpky-1) + pS/(pE+pN+pS): (jpky'=jpky+1);
+  [jpkmove] jpkx > 1 & jpkx < N & jpky > 1 & jpky < N -> pW/(pE+pN+pW+pS): (jpkx'=jpkx-1) + pE/(pE+pN+pW+pS): (jpkx'=jpkx+1)  + pN/(pE+pN+pW+pS): (jpky'=jpky-1) + pS/(pE+pN+pW+pS): (jpky'=jpky+1);
+  [jpkmove] jpkx = N            & jpky > 1 & jpky < N -> pW/(pN+pW+pS): (jpkx'=jpkx-1)                                        + pN/(pN+pW+pS): (jpky'=jpky-1) + pS/(pW+pN+pS): (jpky'=jpky+1);
+  [jpkmove] jpkx = 1            & jpky = N            ->                                    pE/(pE+pN): (jpkx'=jpkx+1)        + pN/(pE+pN): (jpky'=jpky-1);
+  [jpkmove] jpkx > 1 & jpkx < N & jpky = N            -> pW/(pE+pN+pW): (jpkx'=jpkx-1)    + pE/(pE+pN+pW): (jpkx'=jpkx+1)     + pN/(pE+pN+pW): (jpky'=jpky-1);
+  [jpkmove] jpkx = N            & jpky = N            -> pW/(pN+pW): (jpkx'=jpkx-1)                                           + pN/(pN+pW): (jpky'=jpky-1);
+
+endmodule
+
+
+rewards
+  [jpkmove] true : 1;
+endrewards
+
+formula atkk = kkx = jpkx & kky = jpky;
+formula atcc = ccx = jpkx & ccy = jpky;
+label "foundcoffee" = atcc | atkk;

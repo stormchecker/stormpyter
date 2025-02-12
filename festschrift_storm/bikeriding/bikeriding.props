@@ -1,0 +1,6 @@
+Pmax=? [F{"time"}<=90 "Aachen"];
+R{"time"}min=? [F "Aachen"];
+multi(Pmax=? [F{"time"}<=90 "Aachen"], R{"time"}min=? [F "Aachen"]);
+// multi(Pmax=? [F{"time"}<=90 "Aachen"], Pmax=? [F{"boredom"}<=9 "Aachen"]);
+multi(R{"elevgain"}max=? [ F "Aachen"], R{"time"}min=? [ F "Aachen"]);
+quantile(TIME, BORE, Pmax>0.9 [F{"time"}<=TIME,{"boredom"}<=BORE "Aachen"]);

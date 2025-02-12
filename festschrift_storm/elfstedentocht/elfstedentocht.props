@@ -1,0 +1,8 @@
+// Expected time until the event happens from the initial configuration
+// "exp_time_until_event": T=? [F "elfstedentocht"];
+// long-run average number of elfstedentochts per year
+"lra_events": R{"elfstedentocht_rew"}=? [ LRA ];
+// Probability of an elfstedentocht within 60 years
+"pr_event_in_60_years": P=? [F<=60 "elfstedentocht"];
+// expected number of elfstedentochts in 60 years
+//"num_events_in_60_years": R{"elfstedentocht_rew"}=? [C<=60];

@@ -1,0 +1,58 @@
+ctmc
+
+
+const TEMP_MIN=-20;
+const TEMP_MAX=40;
+const TEMP_STEP=10; // TEMP_MIN and TEMP_MAX must be a multiple of TEMP_STEP
+const double TEMP_RATE = (TEMP_MAX-TEMP_MIN) * 2 / TEMP_STEP;
+
+
+const double FREEZE_RATE = 1;
+const double MELT_RATE = FREEZE_RATE;
+const THICKNESS_MAX = 15;
+const THICKNESS_STEP = 5; // THICKNESS_MAX must be a multiple of THICKNESS_STEP
+
+
+module temperature
+	t : [TEMP_MIN..TEMP_MAX] init 0;
+	temp_diff : [-TEMP_STEP..TEMP_STEP] init TEMP_STEP;
+	
+	[temp_change] t>TEMP_MIN & t<TEMP_MAX -> TEMP_RATE : (t' = t+temp_diff);
+	[temp_change] t=TEMP_MIN | t=TEMP_MAX  -> TEMP_RATE : (t' = t-temp_diff) & (temp_diff' = -temp_diff); 
+endmodule
+
+
+module leeuwarden
+	le : [0..THICKNESS_MAX] init 0;
+	[le_up] t<0 & le<THICKNESS_MAX -> -t * FREEZE_RATE: (le'=le+THICKNESS_STEP);
+	[] t>0 & le>0             ->  t *   MELT_RATE: (le'=le-THICKNESS_STEP);
+endmodule
+
+module sneek       = leeuwarden [le=sn,le_up=sn_up] endmodule
+module ijlst       = leeuwarden [le=ij,le_up=ij_up] endmodule
+module sloten      = leeuwarden [le=sl,le_up=sl_up] endmodule
+module stavoren    = leeuwarden [le=st,le_up=st_up] endmodule
+module hindeloopen = leeuwarden [le=hi,le_up=hi_up] endmodule
+module workum      = leeuwarden [le=wo,le_up=wo_up] endmodule
+module bolsward    = leeuwarden [le=bo,le_up=bo_up] endmodule
+module harlingen   = leeuwarden [le=ha,le_up=ha_up] endmodule
+module franeker    = leeuwarden [le=fr,le_up=fr_up] endmodule
+module dokkum      = leeuwarden [le=do,le_up=do_up] endmodule
+
+formula cumulative_thickness = le+sn+ij+sl+st+hi+wo+bo+ha+fr+do;
+
+label "elfstedentocht"= cumulative_thickness = 11*THICKNESS_MAX;
+
+rewards "elfstedentocht_rew"
+[le_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[sn_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[ij_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[sl_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[st_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[hi_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[wo_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[bo_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[ha_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[fr_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+[do_up] cumulative_thickness = (11*THICKNESS_MAX)-THICKNESS_STEP: 1;
+endrewards
