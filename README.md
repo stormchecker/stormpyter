@@ -10,4 +10,7 @@ The directory [tutorial_discotec2020](tutorial_discotec2020) contains two presen
 - [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/moves-rwth/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_stormpy.ipynb) for an interactive presentation about advanced features with [stormpy](https://moves-rwth.github.io/stormpy/), the Python bindings for Storm.
 
 ## Probabilistic Verification tutorial at UAI 2022
-The directory [tutorial](tutorial_uai) contains material from the hands-on session of the tutorial.
+The directory [tutorial_uai](tutorial_uai) contains material from the hands-on session of the tutorial.
+
+## Storm tutorial for the Orchard game
+The directory [tutorial_orchard](tutorial_orchard) contains material for the Storm tutorial on the Orchard game.
