@@ -2,9 +2,9 @@
 
 The directory contains Jupyter notebooks for the [Storm tutorial](https://www.discotec.org/2020/tutorials#the-probabilistic-model-checker-storm) at [DisCoTec 2020](https://www.discotec.org/2020/)
 
-- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/moves-rwth/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_storm.ipynb)
+- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stormchecker/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_storm.ipynb)
 `discotec_storm.ipynb` contains an interactive presentation about the usage and features of [Storm](https://www.stormchecker.org/).
-- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/moves-rwth/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_stormpy.ipynb)
+- [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stormchecker/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_stormpy.ipynb)
 `discotec_stormpy.ipynb` contains an interactive presentation about advanced features with [stormpy](https://moves-rwth.github.io/stormpy/), the Python bindings for Storm.
 
 
