@@ -94,6 +94,7 @@ formula all_trees_empty = apple = 0
 formula game_ended = all_trees_empty | raven = 0;
 label "PlayersWon" =  all_trees_empty & raven > 0;
 label "RavenWon"   = !all_trees_empty & raven = 0;
+label "AllCherriesPicked" = cherry = 0 & raven > 0;
 label "RavenOneAway" = raven = 1;
 
 // rewards

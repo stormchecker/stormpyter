@@ -51,14 +51,18 @@ def build_full():
 
     return orchard, orchard_storm
 
-# Build the full orchard model from Prism
 def build_prism():
+    """
+    Builds the model from the prism program language model.
+    :return: A tuple of the explicit MDP and the programmatic description.
+    """
     prism_program = stormpy.parse_prism_program('examples/orchard_stormvogel.pm')
-    constants = "NUM_FRUIT=4, DISTANCE_RAVEN=5"
+    constants = "NUM_FRUIT=4,DISTANCE_RAVEN=5"
     prism_program = stormpy.preprocess_symbolic_input(prism_program, [], constants)[0].as_prism_program()
     options = stormpy.BuilderOptions()
     options.set_build_state_valuations()
+    options.set_build_all_labels()
     options.set_build_choice_labels()
     options.set_build_with_choice_origins()
     orchard_prism = stormpy.build_sparse_model_with_options(prism_program, options)
-    return orchard_prism
+    return orchard_prism, prism_program
