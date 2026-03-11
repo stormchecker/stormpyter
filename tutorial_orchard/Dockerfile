@@ -19,7 +19,10 @@ WORKDIR /app
 RUN pip install stormvogel
 
 # Install PAYNT
-#RUN pip install paynt
+RUN git clone https://github.com/randriu/synthesis.git \
+	&& cd synthesis \
+	&& pip install -r build-requirements.txt \
+	&& pip install . --no-build-isolation
 
 # Install LP solver
 RUN pip install pyscipopt
