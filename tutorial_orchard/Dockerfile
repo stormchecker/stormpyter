@@ -11,10 +11,6 @@ FROM movesrwth/stormpy:1.12.0
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# Copy the project files into the container
-COPY . /app
-WORKDIR /app
-
 # Install stormvogel
 RUN pip install stormvogel
 
@@ -30,6 +26,10 @@ RUN pip install pyscipopt
 # Install Jupyter lab
 RUN pip install jupyterlab
 RUN pip install jupyterlab-spellchecker
+
+# Copy the project files into the container
+COPY . /app
+WORKDIR /app
 
 
 # create /root/.jupyter directory
