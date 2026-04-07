@@ -4,7 +4,7 @@ stormvogel==0.10.2
 # PAYNT
 paynt==0.3.0
 # LP solver
-pyscipopt
+pyscipopt==6.1.0
 # Jupyter extensions
-jupyterlab-spellchecker
+jupyterlab-spellchecker==0.8.4
 

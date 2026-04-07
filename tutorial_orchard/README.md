@@ -6,7 +6,7 @@ The easiest way to run the notebooks is by building and running the Dockerfile.
 
 ```
 docker build -t orchard .
-docker run -it -p 8080:8080 orchard
+docker run -it -p 8888:8888 orchard
 ```
 After running the Dockerfile, visit the localhost link indicated in the commandline output with your web-browser.
 This opens the Jupyter lab environment.
