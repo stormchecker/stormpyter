@@ -5,7 +5,7 @@ The directory contains Jupyter notebooks for the [Storm tutorial](https://www.di
 - [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stormchecker/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_storm.ipynb)
 `discotec_storm.ipynb` contains an interactive presentation about the usage and features of [Storm](https://www.stormchecker.org/).
 - [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/stormchecker/stormpyter/discotec2020?filepath=tutorial_discotec2020%2Fdiscotec_stormpy.ipynb)
-`discotec_stormpy.ipynb` contains an interactive presentation about advanced features with [stormpy](https://moves-rwth.github.io/stormpy/), the Python bindings for Storm.
+`discotec_stormpy.ipynb` contains an interactive presentation about advanced features with [stormpy](https://stormchecker.github.io/stormpy/), the Python bindings for Storm.
 
 
 ## Following the presentation
