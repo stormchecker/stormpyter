@@ -1,14 +1,28 @@
-# Notebooks for tutorial
+# Notebooks for FM tutorial
 
-These folder contains the Jupyter notebook for the tutorial as well as model files.
+This folder contains material for the Storm tutorial at [FM 2026](https://conf.researchr.org/home/fm-2026).
+We provide the Jupyter notebooks as well as model files.
 
-The easiest way to run the notebooks is by building and running the Dockerfile.
+## Download
+The easiest way is to download and run the prepared Docker image.
 
 ```
-docker build -t orchard .
-docker run -it -p 8888:8888 orchard
+docker run -it -p 8888:8888 mvolk/storm-tutorial
 ```
-After running the Dockerfile, visit the localhost link indicated in the commandline output with your web-browser.
+
+Alternatively, one can also manually build and run from the provided Dockerfile.
+
+```
+docker build -t storm-tutorial .
+docker run -it -p 8888:8888 storm-tutorial
+```
+
+## Running
+After running the Dockerfile, in both cases visit the *localhost* link indicated in the commandline output with your web-browser.
 This opens the Jupyter lab environment.
-The notebooks from the tutorial are available in the `notebooks` directory and follow the same structure as the sections.
+The notebooks from the tutorial are available in the `notebooks` directory and follow the same structure as the sections in the corresponding tutorial paper.
 The example files, such as the Prism model files, are given in `notebooks/examples`.
+
+## Trying online
+One can also run most of the example in our online playground at [try.stormchecker.org](https://try.stormchecker.org/).
+Select the examples from *Examples -> tutorial -> Orchard ...*
