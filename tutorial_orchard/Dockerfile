@@ -3,7 +3,7 @@
 # Run with
 # docker run -it -p 8888:8888 tutorial
 
-FROM quay.io/jupyter/minimal-notebook:ubuntu-24.04
+FROM quay.io/jupyter/minimal-notebook:ubuntu-26.04
 
 # Install graphviz for plotting decision trees with PAYNT
 USER root
