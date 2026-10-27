@@ -30,7 +30,7 @@ class GameState(Enum):
     RAVEN_WON = 2
 
 # Main class for the orchard game
-class Orchard(stormvogel.bird.State):
+class Orchard(stormvogel.bird.BirdState):
     def __init__(self, fruit_types, num_fruits, raven_distance):
         self.trees = {fruit: num_fruits for fruit in fruit_types}
         self.raven = raven_distance
@@ -165,7 +165,7 @@ def labels(state):
     return labels
 
 # Reward function
-def rewards(state, action):
+def rewards(state):
     if state.game_state() == GameState.NOT_ENDED:
         if state.dice is None:
             return {"rounds": 1}
