@@ -1,8 +1,8 @@
 # Storm libraries
 stormpy==2.0.0
 stormvogel==0.13
-# PAYNT (disabled until support for stormpy 2.0 is available)
-#paynt==0.4.3
+# PAYNT
+paynt==0.5.0
 # LP solver
 pyscipopt==6.3.0
 # Jupyter extensions

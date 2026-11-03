@@ -4,8 +4,7 @@ This folder contains material for the Storm tutorial at [FM 2026](https://conf.r
 We provide the Jupyter notebooks as well as model files.
 
 ## Versions
-The notebooks in this folder use [stormpy](https://github.com/stormchecker/stormpy) 2.0 and [stormvogel](https://github.com/stormchecker/stormvogel) 0.13.
-The decision tree synthesis with [PAYNT](https://github.com/randriu/synthesis) in `3-policies.ipynb` is currently disabled, as PAYNT does not yet support stormpy 2.0.
+The notebooks in this folder use [stormpy](https://github.com/stormchecker/stormpy) 2.0, [stormvogel](https://github.com/stormchecker/stormvogel) 0.13 and [PAYNT](https://github.com/randriu/synthesis) 0.5.
 
 The version matching the tutorial paper (using stormpy 1.12) is available under the git tag [fm2026](https://github.com/stormchecker/stormpyter/tree/fm2026/tutorial_orchard) or as an [artifact on Zenodo](https://doi.org/10.5281/zenodo.18955665).
 
